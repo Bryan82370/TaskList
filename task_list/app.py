@@ -44,10 +44,10 @@ class TaskList:
 
     def show(self) -> None:
         for project, tasks in self.tasks.items():
-            self.console.print(project)
+            self.console.print(project + "\n")
             for task in tasks:
-                self.console.print(f"  [{'x' if task.is_done() else ' '}] {task.id}: {task.description}")
-            self.console.print()
+                self.console.print(f"  [{'x' if task.is_done() else ' '}] {task.id}: {task.description}\n")
+
 
     def add(self, command_line: str) -> None:
         sub_command_rest = command_line.split(" ", 1)
@@ -64,9 +64,7 @@ class TaskList:
     def add_task(self, project: str, description: str) -> None:
         project_tasks = self.tasks.get(project)
         if project_tasks is None:
-            self.console.print(f"Could not find a project with the name {project}.")
-            self.console.print()
-            return
+            return self.console.print(f"Could not find a project with the name {project}.\n")
         project_tasks.append(Task(self.next_id(), description, False))
 
     def check(self, id_string: str) -> None:
@@ -82,8 +80,7 @@ class TaskList:
                 if task.id == id_:
                     task.set_done(done)
                     return
-        self.console.print(f"Could not find a task with an ID of {id_}")
-        self.console.print()
+        self.console.print(f"Could not find a task with an ID of {id_}\n")
 
     def help(self) -> None:
         self.console.print("Commands:")
@@ -91,12 +88,10 @@ class TaskList:
         self.console.print("  add project <project name>")
         self.console.print("  add task <project name> <task description>")
         self.console.print("  check <task ID>")
-        self.console.print("  uncheck <task ID>")
-        self.console.print()
+        self.console.print("  uncheck <task ID>\n")
 
     def error(self, command: str) -> None:
-        self.console.print(f"I don't know what the command {command} is.")
-        self.console.print()
+        self.console.print(f"I don't know what the command {command} is.\n")
 
     def next_id(self) -> int:
         self.last_id += 1

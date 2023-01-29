@@ -29,18 +29,14 @@ class TaskList:
     def execute(self, command_line: str) -> None:
         command_rest = command_line.split(" ", 1)
         command = command_rest[0]
-        if command == self.SHOW :
-            self.show()
-        elif command == self.ADD:
-            self.add(command_rest[1])
-        elif command == self.CHECK:
-            self.check(command_rest[1])
-        elif command == self.UNCHECK:
-            self.uncheck(command_rest[1])
-        elif command == self.HELP:
-            self.help()
-        else:
-            self.error(command)
+        switcher={
+                self.SHOW: self.show(),
+                self.ADD: self.add(command_rest[1]),
+                self.CHECK: self.check(command_rest[1]),
+                self.UNCHECK: self.uncheck(command_rest[1]),
+                self.HELP: self.help(),
+                }
+        switcher.get(command, lambda: self.error(command))
 
     def show(self) -> None:
         for project, tasks in self.tasks.items():
@@ -78,8 +74,7 @@ class TaskList:
         for project, tasks in self.tasks.items():
             for task in tasks:
                 if task.id == id_:
-                    task.set_done(done)
-                    return
+                    return task.set_done(done)
         self.console.print(f"Could not find a task with an ID of {id_}\n")
 
     def help(self) -> None:
@@ -96,4 +91,3 @@ class TaskList:
     def next_id(self) -> int:
         self.last_id += 1
         return self.last_id
-
